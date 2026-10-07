@@ -1,0 +1,23 @@
+CREATE DATABASE IF NOT EXISTS moda_mirim CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE moda_mirim;
+
+
+CREATE TABLE IF NOT EXISTS clientes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    telefone VARCHAR(20) NOT NULL,
+    nome_filho VARCHAR(100)
+);
+
+
+CREATE TABLE IF NOT EXISTS produtos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    tamanho VARCHAR(10) NOT NULL,
+    preco DECIMAL(10,2) NOT NULL,
+    estoque INT NOT NULL DEFAULT 0
+);
+
+ALTER TABLE produtos ADD COLUMN imagem VARCHAR(255) DEFAULT 'default.jpg';
+ALTER TABLE produtos ADD COLUMN descricao TEXT;
