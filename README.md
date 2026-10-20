@@ -1,18 +1,10 @@
 
 # 𓊝 Moda Mirim — Documentação (SRS/ERS) °‧ 𓆝 𓆟 𓆞 ·｡
 
-**Sistema:** Moda Mirim — E-commerce de Moda Praia Infantil  
-**Tipo de documento:** Especificação de Requisitos de Software (SRS/ERS)  
-**Referência de estrutura:** ISO/IEC/IEEE 29148:2018  
-**Versão:** 1.0  
-**Data:** Outubro de 2026  
-**Curso:** Técnico em Desenvolvimento de Sistemas — SENAI  
-**Tecnologias utilizadas:** PHP, PostgreSQL, HTML e CSS  
-
----
-
 ## 𓆉︎ 1. Introdução
-
+**Sistema:** Moda Mirim — E-commerce de Moda Praia Infantil  
+**Tipo de documento:** Especificação de Requisitos de Software (SRS/ERS) 
+---
 ### 𓇼 1.1. Propósito
 Este documento especifica os requisitos funcionais e não funcionais do **Moda Mirim**, uma aplicação web desenvolvida para funcionar como um e-commerce especializado em moda praia infantil. O documento descreve as funcionalidades especiais, as regras de negócio, os dados utilizados, entre outros.
 
@@ -24,7 +16,7 @@ A concepção tem como objetivos:
 - Relacionar requisitos, regras de negócio e critérios de limites acessíveis.
 
 ### 𓇼 1.2. Escopo do produto
-O Moda Mirim permite que clientes interessados em moda praia infantil criem uma conta, façam login e comprem peças como maiôs, biquínis, sungas e camisas com proteção UV. Os usuários podem administrar seus carrinhos de compras, gerir suas contas e entrar em contato com a loja. O sistema também possui gerenciamento de perfil, páginas institucionais (Sobre Nós) e de suporte ao cliente.
+O Moda Mirim permite que clientes interessados em moda e conforto para pequenos na praia criem uma conta, façam login e comprem peças como maiôs, biquínis, sungas e camisas com proteção UV para os pequenos. Os usuários podem administrar seus carrinhos de compras, gerir suas contas e entrar em contato com a loja. O sistema também possui gerenciamento de perfil, páginas institucionais (Sobre Nós) e de suporte ao cliente.
 
 ### 𓇼 1.3. Contexto e problema
 A comercialização de vestuário infantil voltado para praia muitas vezes carece de plataformas digitais limpas, intuitivas e com navegação simplificada que mantenham uma identidade visual harmoniosa e profissional. O Moda Mirim soluciona essa necessidade ao reunir um catálogo segmentado, carrinho dinâmico e painel de autenticação em uma plataforma web unificada.
