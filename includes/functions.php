@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 function sanitizar($dado) {
-    return htmlspecialchars(trim($dado), ENT_QUOTES, 'UTF-8');
+    return htmlspecialchars(strip_tags(trim($dado)));
 }
 
 function formatarPreco($valor) {
