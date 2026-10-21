@@ -4,8 +4,14 @@
 ## 𓆉︎ 1. Introdução
 **Sistema:** Moda Mirim — E-commerce de Moda Praia Infantil  
 **Tipo de documento:** Especificação de Requisitos de Software (SRS/ERS) 
+
+## 1.1. Tecnologias Utilizadas
+- **PHP**: Linguagem para processamento no servidor (Server-Side).
+- **PDO**: Conexão segura com o banco de dados via *Prepared Statements*.
+- **MySQL**: Banco de dados relacional.
+- **HTML5 & CSS3**: Interface responsiva e estilizada
 ---
-### 𓇼 1.1. Propósito
+### 𓇼 1.2. Propósito
 Este documento especifica os requisitos funcionais e não funcionais do **Moda Mirim**, uma aplicação web desenvolvida para funcionar como um e-commerce especializado em moda praia infantil. O documento descreve as funcionalidades especiais, as regras de negócio, os dados utilizados, entre outros.
 
 A concepção tem como objetivos:
@@ -15,13 +21,13 @@ A concepção tem como objetivos:
 - Apoiar a identificação de falhas e a evolução do projeto;
 - Relacionar requisitos, regras de negócio e critérios de limites acessíveis.
 
-### 𓇼 1.2. Escopo do produto
+### 𓇼 1.3. Escopo do produto
 O Moda Mirim permite que clientes interessados em moda e conforto para pequenos na praia criem uma conta, façam login e comprem peças como maiôs, biquínis, sungas e camisas com proteção UV para os pequenos. Os usuários podem administrar seus carrinhos de compras, gerir suas contas e entrar em contato com a loja. O sistema também possui gerenciamento de perfil, páginas institucionais (Sobre Nós) e de suporte ao cliente.
 
-### 𓇼 1.3. Contexto e problema
+### 𓇼 1.4. Contexto e problema
 A comercialização de vestuário infantil voltado para praia muitas vezes carece de plataformas digitais limpas, intuitivas e com navegação simplificada que mantenham uma identidade visual harmoniosa e profissional. O Moda Mirim soluciona essa necessidade ao reunir um catálogo segmentado, carrinho dinâmico e painel de autenticação em uma plataforma web unificada.
 
-### 𓇼 1.4. Definições e acrônimos
+### 𓇼 1.5. Definições e acrônimos
 
 | Termo | " |
 | :--- | :--- |

@@ -3,7 +3,7 @@
 
 $localhost = '192.168.10.69';
 $usuario = 'moda_mirim';
-$senha = 'moda_mirim';
+$senha = 'modamirim';
 $banco = 'moda_mirim';
 
 try {

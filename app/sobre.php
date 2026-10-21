@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/includes/header.php';
+require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <main class="container" style="padding: 40px 20px; max-width: 900px; margin: 0 auto; line-height: 1.6;">
@@ -37,5 +37,5 @@ require_once __DIR__ . '/includes/header.php';
 
 <?php
 // Inclui o rodapé
-require_once __DIR__ . '/includes/footer.php';
+require_once __DIR__ . '/../includes/footer.php';
 ?>

@@ -1,75 +1,33 @@
 <?php
-require_once '../database/connect.php';
-require_once '../includes/header.php';
-
-$erro = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = trim($_POST['email'] ?? '');
-    $senha = trim($_POST['senha'] ?? '');
-
-    if (!empty($email) && !empty($senha)) {
-        if (isset($conn) && $conn) {
-            try {
-                $stmt = $conn->prepare("SELECT * FROM usuarios WHERE email = :email");
-                $stmt->execute([':email' => $email]);
-                $usuario = $stmt->fetch();
-
-                if ($usuario && password_verify($senha, $usuario['senha'])) {
-                    $_SESSION['usuario_id'] = $usuario['id'];
-                    $_SESSION['usuario_nome'] = $usuario['nome'];
-                    header("Location: /index.php");
-                    exit();
-                } else {
-                    $erro = "E-mail ou senha incorretos.";
-                }
-            } catch (PDOException $e) {
-                $erro = "Erro ao conectar com a base de dados.";
-            }
-        } else {
-            if ($email === 'admin@modamirim.com' && $senha === '123456') {
-                $_SESSION['usuario_id'] = 1;
-                $_SESSION['usuario_nome'] = 'Administrador';
-                header("Location: /index.php");
-                exit();
-            } else {
-                $erro = "E-mail ou senha incorretos.";
-            }
-        }
-    } else {
-        $erro = "Preencha todos os campos.";
-    }
-}
+require_once __DIR__ . '/../database/connect.php';
+require_once __DIR__ . '/../includes/header.php';
 ?>
 
-<div class="container">
-    <div class="form-box">
-        <h2 style="text-align: center; margin-bottom: 1.5rem; color: #1A1A1A;">Entrar na Conta</h2>
+<div class="container" style="display: flex; justify-content: center; align-items: center; min-height: 75vh; padding: 20px;">
+    <div style="background: #fff; padding: 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); width: 100%; max-width: 420px; border: 1px solid #e2e2e2;">
+        <h2 style="text-align: center; color: #802A41; margin-bottom: 8px; font-size: 1.8rem;">Entrar na Conta</h2>
+        <p style="text-align: center; color: #666; margin-bottom: 25px; font-size: 0.95rem;">Aceda ao Moda Mirim</p>
 
-        <?php if (!empty($erro)): ?>
-            <div style="background-color: #F8D7DA; color: #721C24; padding: 10px; margin-bottom: 1rem; border: 1px solid #F5C6CB;">
-                <?= htmlspecialchars($erro); ?>
-            </div>
-        <?php endif; ?>
-
-        <form action="login.php" method="POST">
-            <div class="form-group">
-                <label for="email">E-mail</label>
-                <input type="email" id="email" name="email" required placeholder="seu@email.com">
+        <form action="verifica_user.php" method="POST" style="display: flex; flex-direction: column; gap: 15px;">
+            <div>
+                <label style="display: block; margin-bottom: 5px; color: #333; font-weight: bold; font-size: 0.9rem;">E-mail:</label>
+                <input type="email" name="email" required placeholder="seu@email.com" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; box-sizing: border-box;">
             </div>
 
-            <div class="form-group">
-                <label for="senha">Senha</label>
-                <input type="password" id="senha" name="senha" required placeholder="Sua senha">
+            <div>
+                <label style="display: block; margin-bottom: 5px; color: #333; font-weight: bold; font-size: 0.9rem;">Senha:</label>
+                <input type="password" name="senha" required placeholder="••••••••" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; box-sizing: border-box;">
             </div>
 
-            <button type="submit" class="btn" style="width: 100%; margin-top: 1rem;">Entrar</button>
+            <button type="submit" style="background: #802A41; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 10px; box-shadow: 0 3px 6px rgba(128,42,65,0.25); transition: background 0.2s;">
+                Entrar
+            </button>
         </form>
 
-        <p style="text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: #555;">
-            Ainda não tem conta? <a href="cadastro.php" style="color: #802A41; font-weight: bold;">Cadastre-se aqui</a>
+        <p style="text-align: center; margin-top: 20px; font-size: 0.9rem; color: #666;">
+            Ainda não tem conta? <a href="cadastro.php" style="color: #802A41; font-weight: bold; text-decoration: none;">Cadastre-se</a>
         </p>
     </div>
 </div>
 
-<?php require_once '../includes/footer.php'; ?>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>

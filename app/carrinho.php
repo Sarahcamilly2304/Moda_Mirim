@@ -1,123 +1,117 @@
 <?php
-require_once __DIR__ . '/../database/connect.php';
-require_once __DIR__ . '/../includes/header.php';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-require_once __DIR__ . '/../includes/footer.php';
-if (!isset($_SESSION['carrinho'])) {
+require_once __DIR__ . '/../database/connect.php';
+
+// Lógica de manipulação do carrinho
+$acao = $_GET['acao'] ?? '';
+$id = $_GET['id'] ?? null;
+
+if (!isset($_SESSION['carrinho']) || !is_array($_SESSION['carrinho'])) {
     $_SESSION['carrinho'] = [];
 }
 
-$acao = $_GET['acao'] ?? '';
-$id = (int)($_GET['id'] ?? 0);
-
 // Adicionar produto
-if ($acao === 'add' && $id > 0) {
-    $nome = 'Produto Moda Mirim';
-    $preco = 89.90;
-
-    // 1. Procura no banco de dados se houver conexão
-    if (isset($conn) && $conn) {
-        try {
-            $stmt = $conn->prepare("SELECT * FROM produtos WHERE id = :id");
-            $stmt->execute([':id' => $id]);
-            $prod = $stmt->fetch();
-            if ($prod) {
-                $nome = $prod['nome'];
-                $preco = (float)$prod['preco'];
-            }
-        } catch (PDOException $e) {}
-    } else {
-        // 2. Mapeamento de fallback de produtos estáticos
-        $produtosExemplo = [
-            1 => ['nome' => 'Maiô Infantil Sereia Proteção UV50+', 'preco' => 89.90],
-            2 => ['nome' => 'Maiô Floral Babados Moda Praia', 'preco' => 79.90],
-            3 => ['nome' => 'Biquíni Infantil Estampa Limão Siciliano', 'preco' => 69.90],
-            4 => ['nome' => 'Sunga Infantil Masculina 2 Anos', 'preco' => 49.90],
-            5 => ['nome' => 'Conjunto Praia Infantil Proteção UV 50+', 'preco' => 89.90]
-        ];
-        if (isset($produtosExemplo[$id])) {
-            $nome = $produtosExemplo[$id]['nome'];
-            $preco = $produtosExemplo[$id]['preco'];
-        }
-    }
-
-    // Grava no carrinho
+if ($acao === 'add' && $id) {
     if (isset($_SESSION['carrinho'][$id])) {
-        $_SESSION['carrinho'][$id]['qtd'] += 1;
+        if (is_array($_SESSION['carrinho'][$id])) {
+            $_SESSION['carrinho'][$id] = 1;
+        } else {
+            $_SESSION['carrinho'][$id] = (int)$_SESSION['carrinho'][$id] + 1;
+        }
     } else {
-        $_SESSION['carrinho'][$id] = [
-            'id'    => $id,
-            'nome'  => $nome,
-            'preco' => $preco,
-            'qtd'   => 1
-        ];
+        $_SESSION['carrinho'][$id] = 1;
     }
-
-    header("Location: /app/carrinho.php");
-    exit();
+    $backUrl = $_SERVER['HTTP_REFERER'] ?? '/app/select.php';
+    header("Location: " . $backUrl);
+    exit;
 }
 
-// Remover item
-if ($acao === 'remove' && $id > 0) {
+// Remover produto
+if ($acao === 'del' && $id) {
     unset($_SESSION['carrinho'][$id]);
     header("Location: /app/carrinho.php");
-    exit();
+    exit;
 }
 
 // Limpar carrinho
 if ($acao === 'limpar') {
     $_SESSION['carrinho'] = [];
     header("Location: /app/carrinho.php");
-    exit();
+    exit;
 }
 
-$totalGeral = 0;
+// Lista base de produtos para consulta do carrinho
+$produtosMock = [
+    1 => ['nome' => 'Maiô Infantil Sereia Proteção UV50+', 'preco' => 89.90, 'imagem' => 'limao.jpg'],
+    2 => ['nome' => 'Maiô Floral Babados Moda Praia', 'preco' => 79.90, 'imagem' => '6ansmasc.fem.jpg'],
+    3 => ['nome' => 'Biquíni Infantil Estampa Limão Siciliano', 'preco' => 69.90, 'imagem' => '2anosmasc.jpg'],
+    4 => ['nome' => 'Sunga Infantil Masculina 2 Anos', 'preco' => 49.90, 'imagem' => 'meninoskit.jpg'],
+    5 => ['nome' => 'Conjunto Camisa UV Infantil Especial', 'preco' => 89.90, 'imagem' => 'limao.jpg']
+];
+
+require_once __DIR__ . '/../includes/header.php';
 ?>
 
-<div class="container">
-    <h2>Seu Carrinho de Compras</h2>
+<div class="container" style="padding: 30px 20px; max-width: 1000px; margin: 0 auto; min-height: 65vh;">
+    <h2 style="color: #802A41; margin-bottom: 20px; text-align: center;">Seu Carrinho de Compras</h2>
 
     <?php if (!empty($_SESSION['carrinho'])): ?>
-        <table>
-            <thead>
-                <tr>
-                    <th>Produto</th>
-                    <th>Preço</th>
-                    <th style="text-align: center;">Qtd</th>
-                    <th>Subtotal</th>
-                    <th style="text-align: center;">Ação</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($_SESSION['carrinho'] as $item): 
-                    if (!is_array($item)) continue;
-                    $subtotal = $item['preco'] * $item['qtd'];
-                    $totalGeral += $subtotal;
-                ?>
-                    <tr>
-                        <td><?= htmlspecialchars($item['nome']); ?></td>
-                        <td><?= formatarPreco($item['preco']); ?></td>
-                        <td style="text-align: center;"><?= $item['qtd']; ?></td>
-                        <td><?= formatarPreco($subtotal); ?></td>
-                        <td style="text-align: center;">
-                            <a href="/app/carrinho.php?acao=remove&id=<?= $item['id']; ?>" style="color: #C81912; font-weight: bold;">Remover</a>
-                        </td>
+        <div style="background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); padding: 20px; border: 1px solid #e2e2e2; overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="border-bottom: 2px solid #802A41; color: #802A41;">
+                        <th style="padding: 12px;">Produto</th>
+                        <th style="padding: 12px;">Preço</th>
+                        <th style="padding: 12px; text-align: center;">Qtd</th>
+                        <th style="padding: 12px;">Subtotal</th>
+                        <th style="padding: 12px; text-align: center;">Ação</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php 
+                    $totalGeral = 0;
+                    foreach ($_SESSION['carrinho'] as $prodId => $qtd): 
+                        if (!is_numeric($qtd) || $qtd <= 0) continue;
+                        
+                        $item = $produtosMock[$prodId] ?? ['nome' => "Produto #$prodId", 'preco' => 50.00, 'imagem' => 'logo.jpg'];
+                        $subtotal = $item['preco'] * $qtd;
+                        $totalGeral += $subtotal;
+                    ?>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 12px; display: flex; align-items: center; gap: 12px;">
+                                <img src="/imagens/<?= htmlspecialchars($item['imagem']); ?>" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;" onerror="this.src='/imagens/logo.jpg';">
+                                <span style="font-weight: bold; color: #333;"><?= htmlspecialchars($item['nome']); ?></span>
+                            </td>
+                            <td style="padding: 12px; color: #555;"><?= formatarPreco($item['preco']); ?></td>
+                            <td style="padding: 12px; text-align: center; font-weight: bold;"><?= $qtd; ?></td>
+                            <td style="padding: 12px; color: #802A41; font-weight: bold;"><?= formatarPreco($subtotal); ?></td>
+                            <td style="padding: 12px; text-align: center;">
+                                <a href="/app/carrinho.php?acao=del&id=<?= $prodId; ?>" style="color: #dc3545; text-decoration: none; font-weight: bold; font-size: 1.2rem;" title="Remover">✕</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
 
-        <div style="text-align: right; margin-top: 2rem;">
-            <h3>Total: <span style="color: #802A41;"><?= formatarPreco($totalGeral); ?></span></h3>
-            <br>
-            <a href="/app/carrinho.php?acao=limpar" class="btn btn-danger" style="margin-right: 10px;">Esvaziar Carrinho</a>
-            <a href="/app/checkout.php" class="btn">Ir para o Pagamento</a>
+            <div style="text-align: right; margin-top: 25px; padding-top: 15px; border-top: 1px solid #ddd;">
+                <h3 style="margin-bottom: 15px; color: #333;">Total: <span style="color: #802A41; font-size: 1.5rem; font-weight: bold;"><?= formatarPreco($totalGeral); ?></span></h3>
+                
+                <div style="display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap;">
+                    <a href="/app/carrinho.php?acao=limpar" class="btn" style="background: #6c757d; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold;">Esvaziar Carrinho</a>
+                    <a href="/app/select.php" class="btn" style="background: #D3A79A; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold;">Continuar Comprando</a>
+                    <a href="/app/checkout.php" class="btn" style="background: #802A41; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; box-shadow: 0 3px 6px rgba(128,42,65,0.25);">Ir para o Pagamento</a>
+                </div>
+            </div>
         </div>
     <?php else: ?>
-        <p style="margin-top: 1.5rem; color: #555;">O seu carrinho está vazio.</p>
-        <br>
-        <a href="/app/select.php" class="btn">Ver Produtos</a>
+        <div style="text-align: center; background: #fff; padding: 40px; border-radius: 8px; border: 1px solid #e2e2e2;">
+            <p style="font-size: 1.1rem; color: #555; margin-bottom: 20px;">O seu carrinho está vazio.</p>
+            <a href="/app/select.php" class="btn" style="background: #802A41; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold;">Ver Produtos</a>
+        </div>
     <?php endif; ?>
 </div>
 
-<?php require_once '../includes/footer.php'; ?>
+<?php require_once __DIR__ . '/../includes/footer.php'; ?>
