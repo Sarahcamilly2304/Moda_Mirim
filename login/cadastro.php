@@ -5,7 +5,7 @@ require_once __DIR__ . '/../includes/header.php';
 
 <div class="container" style="display: flex; justify-content: center; align-items: center; min-height: 80vh; padding: 20px;">
     <div style="background: #fff; padding: 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); width: 100%; max-width: 480px; border: 1px solid #e2e2e2;">
-        <h2 style="text-align: center; color: #802A41; margin-bottom: 8px; font-size: 1.8rem;">Cadastro de Cliente</h2>
+        <h2 style="text-align: center; color: #802A41; margin-bottom: 8px; font-size: 1.8rem;">Cadastro</h2>
         <p style="text-align: center; color: #666; margin-bottom: 25px; font-size: 0.95rem;">Junte-se à família Moda Mirim</p>
 
         <form action="processar_cadastro.php" method="POST" style="display: flex; flex-direction: column; gap: 15px;">
@@ -35,7 +35,7 @@ require_once __DIR__ . '/../includes/header.php';
         </form>
 
         <p style="text-align: center; margin-top: 20px; font-size: 0.9rem; color: #666;">
-            Já tem uma conta? <a href="login.php" style="color: #802A41; font-weight: bold; text-decoration: none;">Faça login</a>
+            Já tem uma conta? <a href="/login/login.php" style="color: #802A41; font-weight: bold; text-decoration: none;">Faça login</a>
         </p>
     </div>
 </div>

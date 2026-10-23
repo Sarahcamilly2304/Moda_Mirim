@@ -1,17 +1,15 @@
-CREATE DATABASE IF NOT EXISTS moda_mirim DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE moda_mirim;
-
--- Elimina tabelas antigas  (para evitar conflitos)
+-- Elimina tabelas antigas (para evitar conflitos)
 DROP TABLE IF EXISTS contatos CASCADE;
 DROP TABLE IF EXISTS produtos CASCADE;
 DROP TABLE IF EXISTS usuarios CASCADE;
 
--- Tabela de Utilizadores
+-- Tabela de Utilizadores (com a coluna 'perfil' incluída corretamente)
 CREATE TABLE usuarios (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
-    senha VARCHAR(255) NOT NULL
+    senha VARCHAR(255) NOT NULL,
+    perfil VARCHAR(50) DEFAULT 'cliente'
 );
 
 -- Tabela de Produtos
@@ -40,3 +38,9 @@ INSERT INTO produtos (nome, preco, categoria, imagem, desconto) VALUES
 ('Biquíni Infantil Estampa Limão Siciliano', 69.90, 'biquini', '2anosmasc.jpg', '12% Off'),
 ('Sunga Infantil Masculina 2 Anos', 49.90, 'sunga', 'meninoskit.jpg', '18% Off'),
 ('Conjunto Camisa UV Infantil Especial', 89.90, 'Protecaouv', 'limao.jpg', '20% Off');
+
+-- Inserção do Administrador (com a senha correspondente a '123456')
+INSERT INTO usuarios (nome, email, senha, perfil) 
+VALUES ('Administrador', 'admin@modamirim.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin')
+ON CONFLICT (email) DO UPDATE 
+SET perfil = 'admin', senha = '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi';

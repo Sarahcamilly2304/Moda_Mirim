@@ -8,7 +8,7 @@ $produtos = [];
 
 if (isset($conn) && $conn) {
     try {
-        $stmt = $conn->prepare("SELECT * FROM produtos WHERE LOWER(categoria) LIKE LOWER(:cat) ORDER BY id DESC");
+        $stmt = $connect_path->prepare("SELECT * FROM produtos WHERE LOWER(categoria) LIKE LOWER(:cat) ORDER BY id DESC");
         $stmt->bindValue(':cat', '%' . $categoria . '%');
         $stmt->execute();
         $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -20,9 +20,9 @@ if (isset($conn) && $conn) {
 // Fallback com os nomes REAIS das imagens contidas na sua pasta "imagens"
 if (empty($produtos)) {
     $produtos = [
-        ['id' => 6, 'nome' => 'Maiô Sereia ', 'preco' => 90.00, 'categoria' => 'maio', 'imagem' => 'maiosereia.jpg', 'desconto' => 'avista 25% Off'],
+        ['id' => 6, 'nome' => 'Maiô Sereia ', 'preco' => 90.00, 'categoria' => 'maio', 'imagem' => 'maiosaia.jpg', 'desconto' => 'avista 25% Off'],
         ['id' => 7, 'nome' => 'Maiô Floral Babados Moda Praia proteçao UV50+', 'preco' => 79.90, 'categoria' => 'maio', 'imagem' => 'maiofloral.jpg', 'desconto' => '10% Off'],
-        ['id' => 8, 'nome' => 'Maiô azul com saia', 'preco' => 89.90, 'categoria' => 'maio', 'imagem' => 'maiosaia.jpg', 'desconto' => '5% Off']
+        ['id' => 8, 'nome' => 'Maiô azul com saia', 'preco' => 89.90, 'categoria' => 'maio', 'imagem' => 'maiosereia.jpg', 'desconto' => '5% Off']
     ];
 }
 ?>
@@ -38,7 +38,9 @@ if (empty($produtos)) {
                 $precoOriginal = $preco * 1.25;
                 $parcela = $preco / 5;
                 $desconto = $p['desconto'] ?? '15% Off';
-                $imagem = !empty($p['imagem']) ? $p['imagem'] : 'maiofloral.jpg';
+                
+                // Limpa o nome da imagem de forma segura dentro do loop
+                $nomeImagem = basename($p['imagem'] ?? 'default.jpg');
                 
                 $precoStr = 'R$ ' . number_format($preco, 2, ',', '.');
                 $precoOrigStr = 'R$ ' . number_format($precoOriginal, 2, ',', '.');
@@ -51,10 +53,10 @@ if (empty($produtos)) {
                                 ♥ <?= htmlspecialchars($desconto); ?>
                             </span>
                             <a href="/app/carrinho.php?acao=add&id=<?= $p['id']; ?>">
-                                <img src="/imagens/<?= htmlspecialchars($imagem); ?>" 
+                                <img src="../imagens/<?= htmlspecialchars($nomeImagem); ?>" 
                                      alt="<?= htmlspecialchars($p['nome']); ?>" 
-                                     style="width: 100%; height: 280px; object-fit: cover; display: block; border-radius: 6px;" 
-                                     onerror="this.onerror=null; this.src='/imagens/maiofloral.jpg';">
+                                     style="width: 100%; height: 280px; object-fit: contain; display: block; border-radius: 6px;" 
+                                     onerror="this.onerror=null; this.src='';">
                             </a>
                         </div>
                         

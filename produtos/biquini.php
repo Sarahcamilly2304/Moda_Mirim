@@ -17,7 +17,7 @@ if (isset($conn) && $conn) {
     }
 }
 
-if (empty($produt)) {
+if (empty($produtos)) {
     $produtos = [
         ['id' => 3, 'nome' => 'Biquíni Infantil Estampa Limão Siciliano', 'preco' => 69.90, 'categoria' => 'biquini', 'imagem' => 'bqlimao.jpg', 'desconto' => '12% Off']
     ];
@@ -35,7 +35,7 @@ if (empty($produt)) {
                 $precoOriginal = $preco * 1.25;
                 $parcela = $preco / 5;
                 $desconto = $p['desconto'] ?? '15% Off';
-                $imagem = !empty($p['imagem']) ? $p['imagem'] : 'maiofloral.jpg';
+                $nomeImagem = basename($p['imagem'] ?? 'default.jpg');
                 
                 $precoStr = 'R$ ' . number_format($preco, 2, ',', '.');
                 $precoOrigStr = 'R$ ' . number_format($precoOriginal, 2, ',', '.');
@@ -48,10 +48,10 @@ if (empty($produt)) {
                                 ♥ <?= htmlspecialchars($desconto); ?>
                             </span>
                             <a href="/app/carrinho.php?acao=add&id=<?= $p['id']; ?>">
-                                <img src="/imagens/<?= htmlspecialchars($imagem); ?>" 
+                                <img src="../imagens/<?= htmlspecialchars($nomeImagem); ?>" 
                                      alt="<?= htmlspecialchars($p['nome']); ?>" 
-                                     style="width: 100%; height: 280px; object-fit: cover; display: block; border-radius: 6px;" 
-                                     onerror="this.onerror=null; this.src='/imagens/maiofloral.jpg';">
+                                     style="width: 100%; height: 280px; object-fit: contain; display: block; border-radius: 6px;" 
+                                     onerror="this.onerror=null; this.src='';">
                             </a>
                         </div>
                         
@@ -77,6 +77,5 @@ if (empty($produt)) {
         <p style="margin-top: 2rem; color: #555;">Nenhum produto encontrado nesta categoria.</p>
     <?php endif; ?>
 </div>
-
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

@@ -7,8 +7,10 @@ $senha = 'modamirim';
 $banco = 'moda_mirim';
 
 try {
-    $conn = new PDO("pgsql:host=$localhost;dbname=$banco", $usuario, $senha);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    $dsn = "pgsql:host=$localhost;dbname=$banco";
+    $pdo = new PDO($dsn, $usuario, $senha);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    echo "Erro na conexão: " . $e->getMessage();
+    die("Erro crítico na conexão com o PostgreSQL: " . $e->getMessage());
 }

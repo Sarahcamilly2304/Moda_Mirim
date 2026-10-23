@@ -68,7 +68,7 @@ if (empty($produtos)) {
                             <span style="position: absolute; top: 12px; left: 12px; background: rgba(255,255,255,0.95); color: #802A41; padding: 6px 12px; font-size: 0.8rem; font-weight: bold; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 2;">
                                 ♥ <?= htmlspecialchars($desconto); ?>
                             </span>
-                            <a href="/app/carrinho.php?acao=add&id=<?= $p['id']; ?>">
+                            <a href="/moda_mirim/app/carrinho.php?acao=add&id=<?= $p['id']; ?>">
                                 <img src="/imagens/<?= htmlspecialchars($imagem); ?>" 
                                      alt="<?= htmlspecialchars($p['nome']); ?>" 
                                      style="width: 100%; height: 280px; object-fit: cover; display: block; border-radius: 6px;"
@@ -94,7 +94,7 @@ if (empty($produtos)) {
                         </div>
                     </div>
 
-                    <a href="/app/carrinho.php?acao=add&id=<?= $p['id']; ?>" class="btn" style="width: 100%; display: block; padding: 12px 0; background: #802A41; color: white; text-align: center; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 1rem; box-shadow: 0 3px 6px rgba(128,42,65,0.25); box-sizing: border-box;">
+                    <a href="/moda_mirim/app/carrinho.php?acao=add&id=<?= $p['id']; ?>" class="btn" style="width: 100%; display: block; padding: 12px 0; background: #802A41; color: white; text-align: center; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 1rem; box-shadow: 0 3px 6px rgba(128,42,65,0.25); box-sizing: border-box;">
                         Adicionar ao Carrinho
                     </a>
                 </div>
